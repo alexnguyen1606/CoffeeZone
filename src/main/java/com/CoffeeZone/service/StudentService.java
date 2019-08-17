@@ -19,14 +19,17 @@ public class StudentService {
         return (ArrayList<Student>) studentRepository.findAll();
     }
     public Student Save(Student student){
-        Student student1 = studentRepository.saveAndFlush(student);
+        Student student1 = studentRepository.findByIdStudent(student.getIdStudent());
+        if(student1!=null){
+        student.setName(student.getName().toUpperCase());
+        student.setIdStudent(student.getIdStudent().toUpperCase());
+        student1 = studentRepository.saveAndFlush(student);
+        }
         return student1;
     }
     public void Delete(int id){
         Student student =  studentRepository.getOne(id);
-
             studentRepository.delete(student);
-
     }
     public Student getOne(int id){
         return studentRepository.getOne(id);

@@ -15,7 +15,7 @@
 <body>
 <%--<c:import url="/template/header.jsp"><c:param name="active" value="active"></c:param> </c:import>--%>
 <c:import url="/template/header.jsp"></c:import>
-
+${status}
 <div class="container">
     <c:if test="${student.id!=0}"><h2>Update</h2></c:if>
     <c:if test="${student.id==0}"><h2>New</h2></c:if>

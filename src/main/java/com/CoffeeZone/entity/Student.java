@@ -3,6 +3,7 @@ package com.CoffeeZone.entity;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -10,10 +11,12 @@ import java.sql.Date;
 @Table(name = "student")
 @Entity
 public class Student implements Serializable {
+
     @Id
     @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotNull(message = "Name not be null")
     @Column(name = "Name")
     private String name;
     @Column(name = "Address")
