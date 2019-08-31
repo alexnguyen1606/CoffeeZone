@@ -1,11 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: admin
-  Date: 8/16/2019
-  Time: 8:43 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<footer>
-
+<footer class="py-5 bg-light ">
+    <div class="container">
+        <p class="m-0 text-center text-black-50">Copyright &copy; Coffee Zone 2019</p>
+    </div>
+    <!-- /.container -->
 </footer>
+<jsp:include page="/template/JQueryLib/jquerylibs.jsp"/>

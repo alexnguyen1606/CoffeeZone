@@ -7,7 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<link href="<c:url value="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
 <link href="<c:url value="/template/css/header-homepage.css"/>" rel="stylesheet">
-<script src="<c:url value="/webjars/jquery/3.4.1/jquery.min.js"/>"></script>
-<script src="<c:url value="/webjars/bootstrap/4.1.3/js/bootstrap.min.js"/>"></script>
+
+<link href="<c:url value="/webjars/bootstrap/4.1.3/css/bootstrap.min.css"/>" rel="stylesheet" />
+<link rel="stylesheet" href="<c:url value="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>">
