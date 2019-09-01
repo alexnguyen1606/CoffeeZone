@@ -19,7 +19,9 @@
     <div class="row">
         <c:import url="/template/admin/menu-admin.jsp"></c:import>
         <div class="col-lg-10" style="padding-top: 10px">
-            <a  href="/admin/product/new"><i class="fa fa-plus-circle fa-3x" style="color: cadetblue"></i></a>
+            <a  href="/admin/product/new"><i class="fa fa-plus-circle fa-3x"></i></a>
+            <a href="/admin/download/listProduct"><i class="fa fa-download fa-3x" style="margin-left:auto " ></i></a>
+            <c:if test="${not empty param.message}"><div class="alert alert-${param.alert}">${param.message}</div></c:if>
             <c:if test="${not empty products}">
             <table class="table table-hover table-striped" id="products" >
                 <thead>

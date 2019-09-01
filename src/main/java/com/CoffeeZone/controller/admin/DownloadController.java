@@ -24,48 +24,47 @@ public class DownloadController {
     private ProductExcel productExcel;
     @Autowired
     private BrandExcel brandExcel;
+
     @GetMapping("/listProduct")
     public void downloadListProuduct(HttpServletResponse response){
         productExcel.ExportListProduct();
         File file = new File(FileConstants.PATH_EXCEL+ExcelConstants.ListProduct);
+        dowload(file,response);
+    }
+
+    @GetMapping("/listBrand")
+    public void downloadListBrand(HttpServletResponse response){
+        brandExcel.ExportListBrand();
+        File file = new File(FileConstants.PATH_EXCEL+ ExcelConstants.ListBrand);
+       dowload(file,response);
+    }
+
+    @GetMapping("/listOrder")
+    public void downloadListOrder(HttpServletResponse response){
+        File file = new File(FileConstants.PATH_EXCEL+"Danh_Sach_Don_Hang.xlsx");
+       dowload(file,response);
+    }
+
+    public void dowload(File file,HttpServletResponse response){
+        InputStream inputStream=null;
         try {
             byte[] data = FileUtils.readFileToByteArray(file);
             response.setContentType("application/octet-stream");
             response.setHeader("Content-disposition","attachment;filename="+file.getName());
             response.setContentLength(data.length);
-            InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
+            inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
             FileCopyUtils.copy(inputStream,response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    @GetMapping("/listBrand")
-    public void downloadListBrand(HttpServletResponse response){
-        brandExcel.ExportListBrand();
-        File file = new File(FileConstants.PATH_EXCEL+ ExcelConstants.ListBrand);
-        try {
-            byte[] data = FileUtils.readFileToByteArray(file);
-            response.setContentType("application/octet-stream");
-            response.setHeader("Context-disposition","attachment;filename="+file.getName());
-            response.setContentLength(data.length);
-            InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
-            FileCopyUtils.copy(inputStream,response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    @GetMapping("/listOrder")
-    public void downloadListOrder(HttpServletResponse response){
-        File file = new File(FileConstants.PATH_EXCEL+"Danh_Sach_Don_Hang.xlsx");
-        try {
-            byte[] data = FileUtils.readFileToByteArray(file);
-            response.setContentType("application/octet-stream");
-            response.setHeader("Context-disposition","attachment;filename="+file.getName());
-            response.setContentLength(data.length);
-            InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(data));
-            FileCopyUtils.copy(inputStream,response.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
+        finally {
+            if (inputStream!=null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

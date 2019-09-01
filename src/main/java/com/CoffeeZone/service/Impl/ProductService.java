@@ -22,6 +22,14 @@ public class ProductService implements IProductService {
     public ArrayList<ProductEntity> findByStatus(){
         return (ArrayList<ProductEntity>) productDAO.findByStatus();
     }
+
+    @Override
+    public void saveAll(ArrayList<ProductEntity> products) {
+        for(ProductEntity product: products){
+            productDAO.save(product);
+        }
+    }
+
     public ArrayList<ProductEntity> findAll(){
         return productDAO.findAll();
     }

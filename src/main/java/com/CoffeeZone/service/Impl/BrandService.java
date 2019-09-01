@@ -29,4 +29,11 @@ public class BrandService implements IBrandService {
     public void deleteById(Integer id) {
         brandDAO.delete(id);
     }
+
+    @Override
+    public void saveAll(ArrayList<BrandEntity> brands) {
+        for (BrandEntity brand : brands){
+            brandDAO.save(brand);
+        }
+    }
 }

@@ -13,13 +13,25 @@
 <head>
     <title>Coffee Zone</title>
     <c:import url="/template/bootstrap.jsp"></c:import>
+    <link href="/template/css/form-import.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <c:import url="/template/admin/header.jsp"></c:import>
 <div >
     <div class="row">
         <c:import url="/template/admin/menu-admin.jsp"></c:import>
-        <div class="col-lg-9">
+        <div class="form-popup" id="formpopup">
+            <form action="/admin/import/product" method="post" enctype="multipart/form-data" class="form-group">
+                <label for="multifile">Choose File</label>
+                <input type="file" name="multifile" id="multifile" class="form-control"/>
+                <br>
+                <button type="submit" class="btn btn-success">Add</button>
+            </form>
+            <button class="btn btn-danger" onclick="closeForm()">Cancel</button>
+        </div>
+        <div class="col-lg-9 form-block" id="formblock">
+            <c:if test="${not empty param.message}"><div class="alert alert-${param.alert}">${param.message}</div></c:if>
+            <button class="btn btn-success" onclick="openForm()">Import</button>
 <form:form modelAttribute="viewmodel" method="POST" action="/admin/product/new" cssClass="form-group" enctype="multipart/form-data">
     <form:label path="name">Name:</form:label>
     <form:input path="name" cssClass="form-control"></form:input>
@@ -60,5 +72,15 @@
     </div>
 </div>
 <c:import url="/template/admin/footer.jsp"></c:import>
+<script>
+    function openForm() {
+        document.getElementById("formpopup").style.display = "block";
+        document.getElementById("formblock").style.display="none";
+    }
+    function closeForm() {
+        document.getElementById("formpopup").style.display = "none";
+        document.getElementById("formblock").style.display="block";
+    }
+</script>
 </body>
 </html>

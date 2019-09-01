@@ -3,10 +3,10 @@ package com.CoffeeZone.utils;
 import com.CoffeeZone.entity.ProductEntity;
 import com.CoffeeZone.systemconstants.FileConstants;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 
 @Component
 public class FileUtils {
@@ -22,5 +22,15 @@ public class FileUtils {
         catch (Exception e){
             System.out.println(e.toString());
         }
+    }
+    public File importFile(MultipartFile multipartFile){
+        File file = new File(FileConstants.PATH_EXCEL+multipartFile.getOriginalFilename());
+        try {
+            multipartFile.transferTo(file);
+            return file;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

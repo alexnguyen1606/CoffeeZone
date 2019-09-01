@@ -38,13 +38,27 @@ public class ProductController {
     }
     @PostMapping("/new")
     public RedirectView save(Model model, @ModelAttribute("viewmodel") ProductViewModel viewmodel){
+        RedirectView rv = new RedirectView();
         ProductEntity productEntity = modelMapper.map(viewmodel,ProductEntity.class);
         BrandEntity brand = brandService.findById(viewmodel.getBrandEntity());
         productEntity.setBrandEntity(brand);
         MultipartFile multipartFile = viewmodel.getMultipartFile();
-        fileUtils.SaveFile(multipartFile,productEntity);
-        productService.save(productEntity);
-        return new RedirectView("/admin/product");
+        if (multipartFile.getContentType().equals("image/jpeg")){
+            System.out.println("Type:"+multipartFile.getContentType());
+            fileUtils.SaveFile(multipartFile,productEntity);
+            productService.save(productEntity);
+            rv.setUrl("/admin/product");
+            rv.addStaticAttribute("alert","success");
+            rv.addStaticAttribute("message","Success");
+            return rv;
+        }
+        else {
+            rv.addStaticAttribute("alert","danger");
+            rv.addStaticAttribute("message","Wrong TypeFile Import");
+            rv.setUrl("/admin/product");
+            return rv;
+        }
+
     }
     @GetMapping("/update")
     public String update(Model model,@RequestParam("id") Integer id){
@@ -66,19 +80,44 @@ public class ProductController {
     }
     @PostMapping("/update")
     public RedirectView update(Model model,@ModelAttribute("viewmodel") ProductViewModel viewmodel){
+        RedirectView rv = new RedirectView("/admin/product");
         ProductEntity productEntity = modelMapper.map(viewmodel,ProductEntity.class);
         BrandEntity brand = brandService.findById(viewmodel.getBrandEntity());
         productEntity.setBrandEntity(brand);
         MultipartFile multipartFile = viewmodel.getMultipartFile();
-        fileUtils.SaveFile(multipartFile,productEntity);
-        productService.update(productEntity);
-        return new RedirectView("/admin/product");
+        if (multipartFile!=null){
+            if(multipartFile.getContentType().equals("image/jpeg")){
+                fileUtils.SaveFile(multipartFile,productEntity);
+                productService.update(productEntity);
+                rv.addStaticAttribute("alert","success");
+                rv.addStaticAttribute("message","Update Success");
+                return rv;
+            }
+            else {
+                rv.addStaticAttribute("alert","danger");
+                rv.addStaticAttribute("message","Update fail!");
+                return rv;
+            }
+        }
+        else {
+         //   fileUtils.SaveFile(multipartFile,productEntity);
+            productService.update(productEntity);
+            rv.addStaticAttribute("alert","success");
+            rv.addStaticAttribute("message","Update Success");
+            return rv;
+        }
+
+
     }
     @GetMapping("/{id}")
     public RedirectView Delete(@PathVariable("id") Integer id, Model model){
         productService.deleteById(id);
         model.addAttribute("products",productService.findAll());
-        return new RedirectView("/admin/product");
+        RedirectView rv = new RedirectView();
+        rv.setUrl("/admin/product");
+        rv.addStaticAttribute("alert","success");
+        rv.addStaticAttribute("message","Delete Success");
+        return rv;
     }
 
 }

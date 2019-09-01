@@ -2,6 +2,8 @@ package com.CoffeeZone.service;
 
 import com.CoffeeZone.entity.BrandEntity;
 
-public interface IBrandService  extends  GenericService<BrandEntity>{
+import java.util.ArrayList;
 
+public interface IBrandService  extends  GenericService<BrandEntity>{
+    void saveAll(ArrayList<BrandEntity> brands);
 }

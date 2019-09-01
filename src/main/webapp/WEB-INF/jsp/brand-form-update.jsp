@@ -21,8 +21,8 @@
     <jsp:include page="/template/admin/menu-admin.jsp"></jsp:include>
     <div class="col-lg-10 form-block" id="formblock">
         <c:if test="${not empty param.message}"><div class="alert alert-${param.alert}">${param.message}</div></c:if>
-        <button class="btn btn-success" onclick="openForm()">Import</button>
-        <form:form action="/admin/brand/new" modelAttribute="viewmodel" method="post"  cssClass="form-group">
+        <form:form action="/admin/brand/update" modelAttribute="viewmodel" method="post"  cssClass="form-group">
+            <form:hidden path="id"></form:hidden>
             <form:label path="name">Name:</form:label>
             <form:input path="name" cssClass="form-control"></form:input>
             <form:label path="description">Description:</form:label>
@@ -37,17 +37,8 @@
                 <form:option value="true">Enable</form:option>
             </form:select>
             <br>
-            <button type="submit" class="btn btn-success">Add</button>
+            <button type="submit" class="btn btn-success">Update</button>
         </form:form>
-    </div>
-    <div class="form-popup" id="formpopup">
-        <form action="/admin/import/brand" method="post" enctype="multipart/form-data" class="form-group">
-            <label for="multifile">Choose file</label>
-            <input type="file" name="multifile" id="multifile" class="form-control"></input>
-            <br>
-            <button type="submit" class="btn btn-success">Import</button>
-        </form>
-        <button class="btn btn-danger" onclick="closeForm()">Cancel</button>
     </div>
 </div>
 <jsp:include page="/template/admin/footer.jsp"></jsp:include>

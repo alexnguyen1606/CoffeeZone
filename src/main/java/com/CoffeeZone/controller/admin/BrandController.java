@@ -32,6 +32,36 @@ public class BrandController {
     public RedirectView save(@ModelAttribute("viewmodel") BrandViewModel viewmodel){
         BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
         brandService.save(brand);
-        return new RedirectView("/admin/brand");
+        RedirectView rv = new RedirectView("/admin/brand");
+        rv.addStaticAttribute("alert","success");
+        rv.addStaticAttribute("message","Success");
+        return rv;
     }
+
+    @GetMapping("/update/{id}")
+    public String updateBrand(@PathVariable("id") Integer id,Model model) {
+        BrandViewModel viewmodel = modelMapper.map(brandService.findById(id),BrandViewModel.class);
+        model.addAttribute("viewmodel",viewmodel);
+        return "brand-form-update";
+    }
+
+    @PostMapping("/update")
+    public RedirectView update(@ModelAttribute("viewmodel") BrandViewModel viewmodel){
+        BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
+        brandService.update(brand);
+        RedirectView rv = new RedirectView("/admin/brand");
+        rv.addStaticAttribute("alert","success");
+        rv.addStaticAttribute("message","Update Success");
+        return rv;
+    }
+
+    @GetMapping("/{id}")
+    public RedirectView delete(@PathVariable("id") Integer id){
+        brandService.deleteById(id);
+        RedirectView rv = new RedirectView("/admin/brand");
+        rv.addStaticAttribute("alert","success");
+        rv.addStaticAttribute("message","Delete Success");
+        return rv;
+    }
+
 }
