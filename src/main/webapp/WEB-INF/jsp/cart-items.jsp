@@ -45,8 +45,7 @@
             </table>
                 <h4 class="">Totol Price:${sessionScope.totalPrice}VNĐ</h4>
                 <br>
-                <button class="btn btn-success" onclick="checkout()">Checkout</button>
-                <%--<a class="btn btn-success" href="/checkout">Checkout</a>--%>
+                <a class="btn btn-success" href="/checkout/formInfo">Checkout</a>
             </c:if>
         </div>
     </div>

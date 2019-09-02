@@ -31,8 +31,9 @@ public class BrandService implements IBrandService {
     }
 
     @Override
-    public void saveAll(ArrayList<BrandEntity> brands) {
+    public void saveAll(ArrayList<BrandEntity> brands,String createdBy) {
         for (BrandEntity brand : brands){
+            brand.setCreatedBy(createdBy);
             brandDAO.save(brand);
         }
     }

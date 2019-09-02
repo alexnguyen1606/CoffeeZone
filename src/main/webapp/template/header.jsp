@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+${pageContext.ELContext.importHandler.importClass('java.net.URLDecoder')}
 <jsp:include page="/template/bootstrap.jsp"></jsp:include>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -12,9 +13,9 @@
     <li class="nav-item "><a class="nav-link ${param.active}" href="/">Service</a></li>
     <li class="nav-item "><a class="nav-link ${param.active}" href="/">About</a></li>
     <c:choose>
-        <c:when test="${not empty USERNAME}">
+        <c:when test="${not empty cookie.USERNAME.value}">
             <li class="nav-item"><a class="nav-link" href="<c:url value="/admin"/>" >Quản lý</a> </li>
-            <li class="nav-item"><a class="nav-link">${FULLNAME}</a></li>
+            <li class="nav-item"><a class="nav-link">${URLDecoder.decode(cookie.FULLNAME.value,'UTF-8')}</a></li>
             <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
         </c:when>
         <c:otherwise>

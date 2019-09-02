@@ -50,7 +50,7 @@
             <span id='message'></span>
             <br>
             <form:label path="email">Email</form:label>
-            <form:input path="email" required="required" cssClass="form-control shape" ></form:input>
+            <form:input path="email" type="email" required="required" oninvalid="alert('Field Must be A Email');"  cssClass="form-control shape" ></form:input>
             <br>
             <button type="submit" class="btn btn-primary">Register</button>
         </form:form>

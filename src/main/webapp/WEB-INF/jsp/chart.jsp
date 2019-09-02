@@ -6,7 +6,8 @@
   Time: 7:41 PM
   To change this template use File | Settings | File Templates.
 --%>
-<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>
+<%--<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>--%>
+<c:if test="${cookie.USERNAME.value==null}"><c:redirect url="/login"></c:redirect></c:if>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>

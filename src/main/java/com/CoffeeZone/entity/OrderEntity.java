@@ -21,8 +21,8 @@ public class OrderEntity extends BaseEntity implements Serializable {
     private String description;
     @Column(name = "Status")
     private Boolean status;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "order",cascade = CascadeType.ALL)
-    private List<OrderDetailEntity> listOderDetail = new ArrayList<>();
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "order",cascade = CascadeType.REMOVE)
+    private Set<OrderDetailEntity> listOderDetail = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "CustomerId",nullable = false)
     private CustomerEntity customer;
@@ -52,11 +52,11 @@ public class OrderEntity extends BaseEntity implements Serializable {
         this.status = status;
     }
 
-    public List<OrderDetailEntity> getListOderDetail() {
+    public Set<OrderDetailEntity> getListOderDetail() {
         return listOderDetail;
     }
 
-    public void setListOderDetail(List<OrderDetailEntity> listOderDetail) {
+    public void setListOderDetail(Set<OrderDetailEntity> listOderDetail) {
         this.listOderDetail = listOderDetail;
     }
 

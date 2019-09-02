@@ -5,6 +5,7 @@ import com.CoffeeZone.entity.ProductEntity;
 import com.CoffeeZone.model.ProductViewModel;
 import com.CoffeeZone.service.Impl.BrandService;
 import com.CoffeeZone.service.Impl.ProductService;
+import com.CoffeeZone.utils.CookieUtils;
 import com.CoffeeZone.utils.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin/product")
@@ -25,6 +28,9 @@ public class ProductController {
     private FileUtils fileUtils;
     @Autowired
     private BrandService brandService;
+    @Autowired
+    private CookieUtils cookieUtils;
+
     @GetMapping
     public String ProductAdminPage(Model model){
         model.addAttribute("products",productService.findAll());
@@ -37,12 +43,15 @@ public class ProductController {
         return "product-form";
     }
     @PostMapping("/new")
-    public RedirectView save(Model model, @ModelAttribute("viewmodel") ProductViewModel viewmodel){
+    public RedirectView save(Model model, @ModelAttribute("viewmodel") ProductViewModel viewmodel, HttpServletRequest request){
         RedirectView rv = new RedirectView();
+        String createdBy = cookieUtils.getValueCookieByUsername(request);
         ProductEntity productEntity = modelMapper.map(viewmodel,ProductEntity.class);
         BrandEntity brand = brandService.findById(viewmodel.getBrandEntity());
         productEntity.setBrandEntity(brand);
+        productEntity.setCreatedBy(createdBy);
         MultipartFile multipartFile = viewmodel.getMultipartFile();
+        if (multipartFile!=null){
         if (multipartFile.getContentType().equals("image/jpeg")){
             System.out.println("Type:"+multipartFile.getContentType());
             fileUtils.SaveFile(multipartFile,productEntity);
@@ -56,6 +65,14 @@ public class ProductController {
             rv.addStaticAttribute("alert","danger");
             rv.addStaticAttribute("message","Wrong TypeFile Import");
             rv.setUrl("/admin/product");
+            return rv;
+        }
+        }
+        else {
+            productService.save(productEntity);
+            rv.setUrl("/admin/product");
+            rv.addStaticAttribute("alert","success");
+            rv.addStaticAttribute("message","Success");
             return rv;
         }
 
@@ -79,11 +96,13 @@ public class ProductController {
         return "product-form-update";
     }
     @PostMapping("/update")
-    public RedirectView update(Model model,@ModelAttribute("viewmodel") ProductViewModel viewmodel){
+    public RedirectView update(Model model,@ModelAttribute("viewmodel") ProductViewModel viewmodel,HttpServletRequest request){
         RedirectView rv = new RedirectView("/admin/product");
+        String modifiedBy=cookieUtils.getValueCookieByUsername(request);
         ProductEntity productEntity = modelMapper.map(viewmodel,ProductEntity.class);
         BrandEntity brand = brandService.findById(viewmodel.getBrandEntity());
         productEntity.setBrandEntity(brand);
+        productEntity.setModifiedBy(modifiedBy);
         MultipartFile multipartFile = viewmodel.getMultipartFile();
         if (multipartFile!=null){
             if(multipartFile.getContentType().equals("image/jpeg")){
@@ -100,7 +119,6 @@ public class ProductController {
             }
         }
         else {
-         //   fileUtils.SaveFile(multipartFile,productEntity);
             productService.update(productEntity);
             rv.addStaticAttribute("alert","success");
             rv.addStaticAttribute("message","Update Success");

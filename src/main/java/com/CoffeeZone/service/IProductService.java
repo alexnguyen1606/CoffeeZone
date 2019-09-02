@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface IProductService extends GenericService<ProductEntity>{
     ArrayList<ProductEntity> findByStatus();
-    void saveAll(ArrayList<ProductEntity> products);
+    void saveAll(ArrayList<ProductEntity> products,String createdBy);
 }

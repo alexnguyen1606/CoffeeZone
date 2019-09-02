@@ -4,6 +4,7 @@ import com.CoffeeZone.importfile.BrandExcelImport;
 import com.CoffeeZone.importfile.ProductExcelImport;
 import com.CoffeeZone.service.Impl.BrandService;
 import com.CoffeeZone.service.Impl.ProductService;
+import com.CoffeeZone.utils.CookieUtils;
 import com.CoffeeZone.utils.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 
 @Controller
@@ -28,17 +30,20 @@ public class ImportController {
     private ProductExcelImport productExcelImport;
     @Autowired
     private BrandExcelImport brandExcelImport;
+    @Autowired
+    private CookieUtils cookieUtils;
 
     String xlsx = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
     @PostMapping("/product")
-    public RedirectView importProduct(@RequestParam("multifile")MultipartFile multipartFile){
+    public RedirectView importProduct(@RequestParam("multifile")MultipartFile multipartFile, HttpServletRequest request){
         System.out.println("type:"+multipartFile.getContentType());
         RedirectView rv = new RedirectView();
+        String createdBy = cookieUtils.getValueCookieByUsername(request);
         if (multipartFile.getContentType().equals(xlsx)||multipartFile==null){
             File file=fileUtils.importFile(multipartFile);
             rv.setUrl("/admin/product");
             try {
-                productService.saveAll(productExcelImport.ReadFileExcel(file));
+                productService.saveAll(productExcelImport.ReadFileExcel(file),createdBy);
                 rv.addStaticAttribute("alert","success");
                 rv.addStaticAttribute("message","Import Success");
             }
@@ -59,13 +64,14 @@ public class ImportController {
         }
     }
     @PostMapping("/brand")
-    public RedirectView importBrand(@RequestParam("multifile")MultipartFile multipartFile){
+    public RedirectView importBrand(@RequestParam("multifile")MultipartFile multipartFile,HttpServletRequest request){
         RedirectView rv = new RedirectView();
+        String createdBy = cookieUtils.getValueCookieByUsername(request);
         if (multipartFile.getContentType().equals(xlsx)||multipartFile==null){
             File file =fileUtils.importFile(multipartFile);
             rv.setUrl("/admin/brand");
             try {
-                brandService.saveAll(brandExcelImport.ReadFileExcel(file));
+                brandService.saveAll(brandExcelImport.ReadFileExcel(file),createdBy);
                 rv.addStaticAttribute("alert","success");
                 rv.addStaticAttribute("message","Import Success");
             }catch (Exception e){

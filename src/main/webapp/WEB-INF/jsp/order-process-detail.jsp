@@ -6,7 +6,8 @@
   Time: 10:03 AM
   To change this template use File | Settings | File Templates.
 --%>
-<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>
+<%--<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>--%>
+<c:if test="${cookie.USERNAME.value==null}"><c:redirect url="/login"></c:redirect></c:if>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -41,7 +42,10 @@
             </table>
             <h3>Total Price: ${order.totalMoney}</h3>
             <br>
-            <a class="btn btn-success" href="<c:url value="/admin/orderprocessing/confirm/${order.id}"/>">Confirm</a>
+            <c:if test="${order.status == false}">
+                <a class="btn btn-success" href="<c:url value="/admin/orderprocessing/confirm/${order.id}"/>">Confirm</a>
+                <a class="btn btn-danger" onclick="return confirm('Are You Sure')" href="<c:url value="/admin/orderprocessing/cancel/${order.id}"/>">Cancel</a>
+            </c:if>
         </div>
     </div>
 </div>

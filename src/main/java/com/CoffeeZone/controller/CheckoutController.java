@@ -35,11 +35,7 @@ public class CheckoutController {
         model.addAttribute("customer",new CustomerEntity());
         return "form-checkout";
     }
-    @GetMapping
-    public String familiar(Model model){
-        model.addAttribute("customer",new CustomerEntity());
-        return "form-checkout2";
-    }
+
     @PostMapping
     public RedirectView checkout(@ModelAttribute("customer") CustomerEntity customer, HttpSession session, Model model){
         HashMap<Integer,Cart> cartItems = (HashMap<Integer, Cart>) session.getAttribute("cartItems");

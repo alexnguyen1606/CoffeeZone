@@ -3,12 +3,15 @@ package com.CoffeeZone.controller.admin;
 import com.CoffeeZone.entity.BrandEntity;
 import com.CoffeeZone.model.BrandViewModel;
 import com.CoffeeZone.service.Impl.BrandService;
+import com.CoffeeZone.utils.CookieUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin/brand")
@@ -17,6 +20,9 @@ public class BrandController {
     private BrandService brandService;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private CookieUtils cookieUtils;
+
     @GetMapping
     public String index(Model model)
     {
@@ -29,8 +35,10 @@ public class BrandController {
         return "brand-form";
     }
     @PostMapping("/new")
-    public RedirectView save(@ModelAttribute("viewmodel") BrandViewModel viewmodel){
+    public RedirectView save(@ModelAttribute("viewmodel") BrandViewModel viewmodel, HttpServletRequest request){
         BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
+        String createdBy = cookieUtils.getValueCookieByUsername(request);
+        brand.setCreatedBy(createdBy);
         brandService.save(brand);
         RedirectView rv = new RedirectView("/admin/brand");
         rv.addStaticAttribute("alert","success");
@@ -46,8 +54,10 @@ public class BrandController {
     }
 
     @PostMapping("/update")
-    public RedirectView update(@ModelAttribute("viewmodel") BrandViewModel viewmodel){
+    public RedirectView update(@ModelAttribute("viewmodel") BrandViewModel viewmodel,HttpServletRequest request){
         BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
+        String modifiedBy = cookieUtils.getValueCookieByUsername(request);
+        brand.setModifiedBy(modifiedBy);
         brandService.update(brand);
         RedirectView rv = new RedirectView("/admin/brand");
         rv.addStaticAttribute("alert","success");

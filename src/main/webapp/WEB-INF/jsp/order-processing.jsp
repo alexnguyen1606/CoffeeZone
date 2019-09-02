@@ -7,7 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>
+<%--<c:if test="${USERNAME==null}"><c:redirect url="/login"></c:redirect></c:if>--%>
+<c:if test="${cookie.USERNAME.value==null}"><c:redirect url="/login"></c:redirect></c:if>
 <html>
 <head>
     <title>Coffee Zone</title>
@@ -19,6 +20,7 @@
     <div class="row">
         <jsp:include page="/template/admin/menu-admin.jsp"></jsp:include>
         <div class="col-lg-10">
+            <c:if test="${not empty param.message}"><div class="alert alert-${param.alert}">${param.message}</div></c:if>
         <table class="table-hover table table-striped" id="table">
             <thead>
             <tr>

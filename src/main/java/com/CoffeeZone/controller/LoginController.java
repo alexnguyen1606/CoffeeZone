@@ -4,6 +4,7 @@ import com.CoffeeZone.entity.AccountEntity;
 import com.CoffeeZone.model.LoginViewModel;
 import com.CoffeeZone.service.Impl.AccountService;
 import com.CoffeeZone.utils.AuthenticationUtils;
+import com.CoffeeZone.utils.CookieUtils;
 import com.CoffeeZone.utils.SessionUtils;
 import com.CoffeeZone.utils.VerifyUtils;
 import org.modelmapper.ModelMapper;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class LoginController {
@@ -28,14 +30,16 @@ public class LoginController {
     private ModelMapper modelMapper;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private CookieUtils cookieUtils;
     @GetMapping(value = {"/login","/admin/login"})
     public String LoginPage(Model model){
         model.addAttribute("viewmodel",new LoginViewModel());
         return "login";
     }
     @PostMapping("/login")
-    public RedirectView login(@ModelAttribute("viewmodel") LoginViewModel viewmodel, HttpSession session,
-                              @RequestParam("g-recaptcha-response") String gRecapcha){
+    public RedirectView login(@ModelAttribute("viewmodel") LoginViewModel viewmodel,
+                              @RequestParam("g-recaptcha-response") String gRecapcha, HttpServletResponse response){
        String username = viewmodel.getUsername();
        String password = viewmodel.getPassword();
        RedirectView rv = new RedirectView();
@@ -57,25 +61,24 @@ public class LoginController {
            }
        }
        if(valid){
-           sessionUtils.createSession(session,account.getUsername(),account.getName(),account.getRoleEntities().toString());
+           cookieUtils.createCookie(response,account.getUsername(),account.getName(),account.getRoleEntities().toString());
             rv.setUrl("/admin");
             return rv;
        }
        return new RedirectView("/login");
     }
     @GetMapping("/logout")
-    public RedirectView home(HttpSession session){
-        sessionUtils.deleteSession(session);
+    public RedirectView home( HttpServletRequest request,HttpServletResponse response){
+        cookieUtils.deleteCookie(request,response);
         return new RedirectView("/");
     }
     @PostMapping("/register")
-    public RedirectView register(@ModelAttribute("viewmodel") LoginViewModel viewmodel,HttpSession session,Model model){
+    public RedirectView register(@ModelAttribute("viewmodel") LoginViewModel viewmodel,Model model,HttpServletResponse response){
         RedirectView rv = new RedirectView();
         if(authenticationUtils.isExits(viewmodel.getUsername())){
             AccountEntity account = modelMapper.map(viewmodel,AccountEntity.class);
             account=accountService.save(account);
-            sessionUtils.createSession(session,account.getUsername(),
-                    account.getName(),account.getRoleEntities().toString());
+            cookieUtils.createCookie(response,account.getUsername(),account.getName(),account.getRoleEntities().toString());
             rv.setUrl("/");
             return rv;
         }

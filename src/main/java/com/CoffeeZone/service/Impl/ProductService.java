@@ -24,8 +24,9 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public void saveAll(ArrayList<ProductEntity> products) {
+    public void saveAll(ArrayList<ProductEntity> products,String createdBy) {
         for(ProductEntity product: products){
+            product.setCreatedBy(createdBy);
             productDAO.save(product);
         }
     }

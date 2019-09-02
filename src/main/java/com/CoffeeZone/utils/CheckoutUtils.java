@@ -10,7 +10,6 @@ import com.CoffeeZone.service.Impl.OrderDetailService;
 import com.CoffeeZone.service.Impl.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +25,7 @@ public class CheckoutUtils {
     private OrderDetailService orderDetailService;
     @Autowired
     private SendMail sendMail;
+
     public void checkout(HashMap<Integer,Cart> cartItems, CustomerEntity customer, int totalPrice){
         OrderEntity order = new OrderEntity();
         order.setStatus(false);
@@ -37,10 +37,9 @@ public class CheckoutUtils {
         else {
              customerInDb = customer;
         }
-        order.setCustomer(customerInDb);
-        order = orderService.save(order);
-       sendMail.ConfirmOrder(customerInDb.getEmail(),totalPrice,order,cartItems);
         try {
+            order.setCustomer(customerInDb);
+            order = orderService.save(order);
             for (Map.Entry<Integer, Cart> list : cartItems.entrySet()) {
                 OrderDetailEntity orderDetail = new OrderDetailEntity();
                 orderDetail.setQuantity(list.getValue().getQuantity());
@@ -48,6 +47,7 @@ public class CheckoutUtils {
                 orderDetail.setProduct(list.getValue().getProduct());
                 orderDetail = orderDetailService.save(orderDetail);
             }
+            sendMail.ConfirmOrder(customerInDb.getEmail(),totalPrice,order,cartItems);
             cartItems.clear();
         }catch (Exception e){
             e.printStackTrace();

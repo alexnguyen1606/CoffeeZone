@@ -14,7 +14,7 @@ public class OrderService implements IOrderService{
     private OrderDAO orderDAO;
     @Override
     public OrderEntity save(OrderEntity orderEntity){
-        return orderDAO.update(orderEntity);
+        return orderDAO.save(orderEntity);
     }
     @Override
     public ArrayList<OrderEntity> findByStatus(){
