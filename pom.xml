@@ -248,13 +248,7 @@
 			</snapshots>
 		</repository>
 	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>internal.repo</id>
-			<name>Internal repo</name>
-			<url>http://localhost:8080/</url>
-		</repository>
-	</distributionManagement>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>spring-milestones</id>
