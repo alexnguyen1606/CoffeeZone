@@ -18,6 +18,7 @@ public class AccountDAO implements IAccountDAO {
 
     @Override
     public ArrayList<AccountEntity> findAll() {
+        //return (ArrayList<AccountEntity>) getEntityManager.entityManager().createQuery("select a from AccountEntity  a");
         return (ArrayList<AccountEntity>) entityManager.createQuery("SELECT  a from AccountEntity a ");
     }
 

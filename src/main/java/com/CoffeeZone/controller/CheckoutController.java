@@ -24,10 +24,6 @@ public class CheckoutController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private OrderDetailService orderDetailService;
-    @Autowired
-    private OrderService orderService;
-    @Autowired
     private CheckoutUtils checkoutUtils;
 
     @GetMapping("/formInfo")

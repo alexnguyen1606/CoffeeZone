@@ -46,6 +46,9 @@
                 <a class="btn btn-success" href="<c:url value="/admin/orderprocessing/confirm/${order.id}"/>">Confirm</a>
                 <a class="btn btn-danger" onclick="return confirm('Are You Sure')" href="<c:url value="/admin/orderprocessing/cancel/${order.id}"/>">Cancel</a>
             </c:if>
+            <c:if test="${order.status == true && not empty order.modifiedBy }">
+                <h1>Processed By: ${order.modifiedBy}</h1>
+            </c:if>
         </div>
     </div>
 </div>

@@ -11,7 +11,7 @@
 	<groupId>com</groupId>
 	<artifactId>CoffeeZone</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+    <packaging>pom</packaging>
 	<name>CoffeeZone</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -20,7 +20,6 @@
 		<hibernate.version>5.2.17.final</hibernate.version>
 		<springsecurity.version>3.2.8.RELEASE</springsecurity.version>
 	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -61,7 +60,7 @@
 			<version>${springsecurity.version}</version>
 		</dependency>
 
-		<!-- spring secuirty taglibs -->
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
@@ -70,12 +69,12 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${hibernate.version}</version>
+			<version>5.2.17.final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version>
+			<version>5.2.17.final</version>
 		</dependency>
 
 		<dependency>

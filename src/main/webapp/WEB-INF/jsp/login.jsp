@@ -22,37 +22,33 @@
 
 <body>
 <jsp:include page="/template/header.jsp"></jsp:include>
-<div class="container">
+<div class="container ">
     <c:if test="${param.message!=null}"><div class="alert alert-danger col-lg-6 shape">${param.message}</div></c:if>
-<div class="row" style="margin-top: 30px">
-    <div class="form-login col-lg-6" id="formlogin" >
+<div class="row center align-content-center">
+    <div class="form-login col-lg-6 " id="formlogin" >
         <form:form action="/login" method="post" modelAttribute="viewmodel" cssClass="form-group">
             <form:label path="username">Username</form:label>
-            <form:input path="username"  cssClass="form-control shape"  required="required" ></form:input>
+            <form:input path="username"  cssClass="form-control "  required="required" ></form:input>
             <form:label path="password">Password</form:label>
-            <form:password  path="password"  cssClass="form-control shape"  required="required"></form:password>
+            <form:password  path="password"  cssClass="form-control "  required="required"></form:password>
             <div class="g-recaptcha shape"
                  data-sitekey="6Le91LUUAAAAABm64Gl9zBlACYZrO9DHudc-kuGT" ></div>
             <button type="submit" class="btn-success btn shape" >login</button>
             <p class="message">Not registered? <a href="#" onclick="openForm()">Create an account</a></p>
         </form:form>
     </div>
-    <div class="form-popup col-lg-6" id="formregister">
+    <div class="form-popup  col-lg-6" id="formregister">
         <form:form action="/register" method="post" modelAttribute="viewmodel" cssClass="form-group">
             <form:label path="username">Username</form:label>
-            <form:input path="username" cssClass="form-control shape"  required="required"></form:input>
-            <br>
+            <form:input path="username" cssClass="form-control "  required="required"></form:input>
             <form:label path="password">Password</form:label>
-            <form:password path="password" id="password" cssClass="form-control shape"  required="required"></form:password>
-            <br>
+            <form:password path="password" id="password" cssClass="form-control "  required="required"></form:password>
             <label>Confirm Password</label>
-            <input  id="confirm_password" required type="password" class="form-control shape" />
+            <input  id="confirm_password" required type="password" class="form-control " />
             <span id='message'></span>
-            <br>
             <form:label path="email">Email</form:label>
-            <form:input path="email" type="email" required="required" oninvalid="alert('Field Must be A Email');"  cssClass="form-control shape" ></form:input>
-            <br>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <form:input path="email" type="email" required="required" oninvalid="alert('Field Must be A Email');"  cssClass="form-control " ></form:input>
+            <button type="submit" class="btn btn-primary shape">Register</button>
         </form:form>
         <p class="message">Have Account? <a href="#" onclick="closeForm()">Login</a></p>
     </div>

@@ -28,10 +28,8 @@
             <form:input path="name" cssClass="form-control"></form:input>
             <form:label path="description">Description:</form:label>
             <form:input path="description" cssClass="form-control"></form:input>
-            <br>
             <form:label path="establieshed">Establieshed</form:label>
             <form:input path="establieshed" cssClass="form-control"></form:input>
-            <br>
             <form:label path="status">Status:</form:label>
             <form:select path="status" cssClass="form-control">
                 <form:option value="false">Disable</form:option>
