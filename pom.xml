@@ -11,7 +11,7 @@
 	<groupId>com</groupId>
 	<artifactId>CoffeeZone</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
+	<packaging>war</packaging>
 	<name>CoffeeZone</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -245,6 +245,17 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
+		</repository>
+
+		<repository>
+			<id>com.springsource.repository.bundles.release</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>com.springsource.repository.bundles.external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 	</repositories>
 
