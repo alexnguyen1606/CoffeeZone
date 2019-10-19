@@ -1,8 +1,9 @@
 package com.CoffeeZone.controller;
 
+import com.CoffeeZone.dao.Impl.CustomerDAO;
+import com.CoffeeZone.dao.Impl.ProductDAO;
 import com.CoffeeZone.entity.CustomerEntity;
 import com.CoffeeZone.model.Cart;
-import com.CoffeeZone.service.Impl.*;
 import com.CoffeeZone.utils.CheckoutUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,9 @@ import java.util.HashMap;
 @RequestMapping("/checkout")
 public class CheckoutController {
     @Autowired
-    private CustomerService customerService;
+    private CustomerDAO customerDAO;
     @Autowired
-    private ProductService productService;
+    private ProductDAO productDAO;
     @Autowired
     private CheckoutUtils checkoutUtils;
 
@@ -36,7 +37,7 @@ public class CheckoutController {
     public RedirectView checkout(@ModelAttribute("customer") CustomerEntity customer, HttpSession session, Model model){
         HashMap<Integer,Cart> cartItems = (HashMap<Integer, Cart>) session.getAttribute("cartItems");
         int totalPrice = (int) session.getAttribute("totalPrice");
-        CustomerEntity customerCheck = customerService.findByEmail(customer.getEmail());
+        CustomerEntity customerCheck = customerDAO.findByEmail(customer.getEmail());
         if (customerCheck!=null){
             checkoutUtils.checkout(cartItems,customerCheck,totalPrice);
         }
@@ -45,7 +46,7 @@ public class CheckoutController {
         }
         session.setAttribute("cartItems",cartItems);
         session.setAttribute("totalItem",0);
-        model.addAttribute("products",productService.findByStatus());
+        model.addAttribute("products",productDAO.findByStatus());
         return new RedirectView("/");
     }
 }

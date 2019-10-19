@@ -1,10 +1,10 @@
 package com.CoffeeZone.controller.admin;
 
+import com.CoffeeZone.dao.Impl.ProductDAO;
 import com.CoffeeZone.entity.BrandEntity;
 import com.CoffeeZone.entity.ProductEntity;
 import com.CoffeeZone.model.ProductViewModel;
 import com.CoffeeZone.service.Impl.BrandService;
-import com.CoffeeZone.service.Impl.ProductService;
 import com.CoffeeZone.utils.CookieUtils;
 import com.CoffeeZone.utils.FileUtils;
 import org.modelmapper.ModelMapper;
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin/product")
 public class ProductController {
     @Autowired
-    private ProductService productService;
+    private ProductDAO productDAO;
    @Autowired
    private ModelMapper modelMapper;
     @Autowired
@@ -33,7 +33,7 @@ public class ProductController {
 
     @GetMapping
     public String ProductAdminPage(Model model){
-        model.addAttribute("products",productService.findAll());
+        model.addAttribute("products",productDAO.findAll());
         return "product-admin";
     }
     @GetMapping("/new")
@@ -55,7 +55,7 @@ public class ProductController {
         if (multipartFile.getContentType().equals("image/jpeg")){
             System.out.println("Type:"+multipartFile.getContentType());
             fileUtils.SaveFile(multipartFile,productEntity);
-            productService.save(productEntity);
+            productDAO.save(productEntity);
             rv.setUrl("/admin/product");
             rv.addStaticAttribute("alert","success");
             rv.addStaticAttribute("message","Success");
@@ -69,7 +69,7 @@ public class ProductController {
         }
         }
         else {
-            productService.save(productEntity);
+            productDAO.save(productEntity);
             rv.setUrl("/admin/product");
             rv.addStaticAttribute("alert","success");
             rv.addStaticAttribute("message","Success");
@@ -79,7 +79,7 @@ public class ProductController {
     }
     @GetMapping("/update")
     public String update(Model model,@RequestParam("id") Integer id){
-        ProductEntity productEntity = productService.findById(id);
+        ProductEntity productEntity = productDAO.findById(id);
         ProductViewModel viewmodel = new ProductViewModel();
         viewmodel.setId(productEntity.getId());
         viewmodel.setName(productEntity.getName());
@@ -107,7 +107,7 @@ public class ProductController {
         if (multipartFile!=null){
             if(multipartFile.getContentType().equals("image/jpeg")){
                 fileUtils.SaveFile(multipartFile,productEntity);
-                productService.update(productEntity);
+                productDAO.update(productEntity);
                 rv.addStaticAttribute("alert","success");
                 rv.addStaticAttribute("message","Update Success");
                 return rv;
@@ -119,7 +119,7 @@ public class ProductController {
             }
         }
         else {
-            productService.update(productEntity);
+            productDAO.update(productEntity);
             rv.addStaticAttribute("alert","success");
             rv.addStaticAttribute("message","Update Success");
             return rv;
@@ -129,8 +129,8 @@ public class ProductController {
     }
     @GetMapping("/{id}")
     public RedirectView Delete(@PathVariable("id") Integer id, Model model){
-        productService.deleteById(id);
-        model.addAttribute("products",productService.findAll());
+        productDAO.deleteById(id);
+        model.addAttribute("products",productDAO.findAll());
         RedirectView rv = new RedirectView();
         rv.setUrl("/admin/product");
         rv.addStaticAttribute("alert","success");

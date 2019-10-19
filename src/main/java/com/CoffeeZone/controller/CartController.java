@@ -1,8 +1,8 @@
 package com.CoffeeZone.controller;
 
+import com.CoffeeZone.dao.Impl.ProductDAO;
 import com.CoffeeZone.entity.ProductEntity;
 import com.CoffeeZone.model.Cart;
-import com.CoffeeZone.service.Impl.ProductService;
 import com.CoffeeZone.utils.CartUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,8 @@ import java.util.HashMap;
 public class CartController {
 
     @Autowired
-    private ProductService productService;
+    private ProductDAO productDAO;
+
     @Autowired
     private CartUtils cartUtils;
 
@@ -42,7 +43,7 @@ public class CartController {
 
        cartUtils.addItem(session,cartItems,id);
 
-        model.addAttribute("products",(ArrayList<ProductEntity>)productService.findByStatus());
+        model.addAttribute("products",(ArrayList<ProductEntity>)productDAO.findByStatus());
         return new RedirectView("/");
     }
 

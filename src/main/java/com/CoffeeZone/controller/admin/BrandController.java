@@ -1,8 +1,8 @@
 package com.CoffeeZone.controller.admin;
 
+import com.CoffeeZone.dao.Impl.BrandDAO;
 import com.CoffeeZone.entity.BrandEntity;
 import com.CoffeeZone.model.BrandViewModel;
-import com.CoffeeZone.service.Impl.BrandService;
 import com.CoffeeZone.utils.CookieUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/admin/brand")
 public class BrandController {
     @Autowired
-    private BrandService brandService;
+    private BrandDAO brandDAO;
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -26,7 +26,7 @@ public class BrandController {
     @GetMapping
     public String index(Model model)
     {
-        model.addAttribute("brands",brandService.findAll());
+        model.addAttribute("brands",brandDAO.findAll());
         return "brand-admin";
     }
     @GetMapping("/new")
@@ -39,7 +39,7 @@ public class BrandController {
         BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
         String createdBy = cookieUtils.getValueCookieByUsername(request);
         brand.setCreatedBy(createdBy);
-        brandService.save(brand);
+        brandDAO.save(brand);
         RedirectView rv = new RedirectView("/admin/brand");
         rv.addStaticAttribute("alert","success");
         rv.addStaticAttribute("message","Success");
@@ -48,7 +48,7 @@ public class BrandController {
 
     @GetMapping("/update/{id}")
     public String updateBrand(@PathVariable("id") Integer id,Model model) {
-        BrandViewModel viewmodel = modelMapper.map(brandService.findById(id),BrandViewModel.class);
+        BrandViewModel viewmodel = modelMapper.map(brandDAO.findById(id),BrandViewModel.class);
         model.addAttribute("viewmodel",viewmodel);
         return "brand-form-update";
     }
@@ -58,7 +58,7 @@ public class BrandController {
         BrandEntity brand = modelMapper.map(viewmodel,BrandEntity.class);
         String modifiedBy = cookieUtils.getValueCookieByUsername(request);
         brand.setModifiedBy(modifiedBy);
-        brandService.update(brand);
+        brandDAO.update(brand);
         RedirectView rv = new RedirectView("/admin/brand");
         rv.addStaticAttribute("alert","success");
         rv.addStaticAttribute("message","Update Success");
@@ -67,7 +67,7 @@ public class BrandController {
 
     @GetMapping("/{id}")
     public RedirectView delete(@PathVariable("id") Integer id){
-        brandService.deleteById(id);
+        brandDAO.deleteById(id);
         RedirectView rv = new RedirectView("/admin/brand");
         rv.addStaticAttribute("alert","success");
         rv.addStaticAttribute("message","Delete Success");
